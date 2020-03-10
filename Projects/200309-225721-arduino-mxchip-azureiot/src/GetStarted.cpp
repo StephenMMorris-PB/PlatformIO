@@ -11,14 +11,14 @@ int messageCount = 1;
 
 void initWifi()
 {
-     Screen.print("IoT DevKit\r\n \r\nConnecting...\r\n");
+     Screen.print("Geofence-Device1\r\n \r\nConnecting...\r\n");
 
     if (WiFi.begin() == WL_CONNECTED)
     {
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/9/20 10:58pm \r\n");
+        Screen.print(2, "3/9/20 12:26am \r\n");
     }
     else
     {
