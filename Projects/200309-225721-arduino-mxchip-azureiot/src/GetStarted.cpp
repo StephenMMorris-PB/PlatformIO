@@ -19,7 +19,7 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/10/20 7:17am \r\n");
+        Screen.print(2, "3/10/20 1:44 pm \r\n");
     }
     else
     {

@@ -13,6 +13,7 @@
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/WiFi/src",
                 "C:/Users/smm-c/.platformio/lib/Adafruit GPS Library_ID20",
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/Wire",
+                "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/SPI",
                 "C:/Users/smm-c/OneDrive/Documents/PlatformIO/Projects/200309-225721-arduino-mxchip-azureiot/.pio/libdeps/mxchip_az3166/ArduinoJson_ID64/src",
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/system/cmsis",
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/system/drivers",
@@ -101,7 +102,6 @@
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/AudioV2/src",
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/FileSystem/src",
                 "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/MQTT/src",
-                "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/SPI",
                 "C:/Users/smm-c/.platformio/packages/tool-unity",
                 ""
             ],
@@ -115,6 +115,7 @@
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/WiFi/src",
                     "C:/Users/smm-c/.platformio/lib/Adafruit GPS Library_ID20",
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/Wire",
+                    "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/SPI",
                     "C:/Users/smm-c/OneDrive/Documents/PlatformIO/Projects/200309-225721-arduino-mxchip-azureiot/.pio/libdeps/mxchip_az3166/ArduinoJson_ID64/src",
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/system/cmsis",
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/system/drivers",
@@ -203,7 +204,6 @@
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/AudioV2/src",
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/FileSystem/src",
                     "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/MQTT/src",
-                    "C:/Users/smm-c/.platformio/packages/framework-arduinostm32mxchip/libraries/SPI",
                     "C:/Users/smm-c/.platformio/packages/tool-unity",
                     ""
                 ]
