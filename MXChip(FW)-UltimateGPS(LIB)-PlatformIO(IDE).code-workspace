@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "C:\\Users\\smm-c\\.platformio\\lib\\Adafruit GPS Library_ID20"
+		},
+		{
+			"path": "Projects\\200309-225721-arduino-mxchip-azureiot"
 		}
 	],
 	"settings": {}
