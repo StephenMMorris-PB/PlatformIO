@@ -4,7 +4,8 @@
 #include "utility.h"
 #include "iothub_client_sample_mqtt.h"
 #include "Telemetry.h"
-//smm test GitHub.
+//smm-added GPS header
+#include "Adafruit_GPS.h"
 
 static bool hasWifi = false;
 int messageCount = 1;
@@ -18,7 +19,7 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/9/20 12:26am \r\n");
+        Screen.print(2, "3/10/20 7:17am \r\n");
     }
     else
     {
