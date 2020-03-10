@@ -4,6 +4,7 @@
 #include "utility.h"
 #include "iothub_client_sample_mqtt.h"
 #include "Telemetry.h"
+//smm test GitHub.
 
 static bool hasWifi = false;
 int messageCount = 1;
