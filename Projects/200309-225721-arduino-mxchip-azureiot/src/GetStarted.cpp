@@ -13,7 +13,7 @@
 
 // smm: adding 2nd UART. . .
 
-UARTClass Serial1(UART_1);
+//UARTClass Serial1(UART_1);
 
 static bool hasWifi = false;
 int messageCount = 1;
@@ -27,7 +27,7 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/10/20 1:44 pm \r\n");
+        Screen.print(2, "3/11/20 2:06 pm \r\n");
     }
     else
     {
