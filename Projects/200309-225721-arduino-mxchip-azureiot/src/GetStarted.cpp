@@ -13,21 +13,22 @@
 
 // smm: adding 2nd UART. . .
 
-//UARTClass Serial1(UART_1);
+UARTClass Serial1(UART_1);
 
 static bool hasWifi = false;
 int messageCount = 1;
 
 void initWifi()
 {
-     Screen.print("Geofence-Device1\r\n \r\nConnecting...\r\n");
+     Screen.print("Geo Device1\r\n \r\nConnecting...\r\n");
 
     if (WiFi.begin() == WL_CONNECTED)
     {
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/11/20 2:06 pm \r\n");
+        Screen.print(2, "3/11/20 3:20 pm \r\n");
+        Screen.print(3, "Goal: show L/L\r\n");
     }
     else
     {
@@ -37,6 +38,9 @@ void initWifi()
 
 void setup()
 {
+    //smm-setting up 2nd UART for GPS data
+    Serial1.begin(9600);
+
     hasWifi = false;
     initWifi();
     if (!hasWifi)
@@ -56,9 +60,15 @@ void setup()
 
 void loop()
 {
-    char messagePayload[MESSAGE_MAX_LEN];
-    bool temperatureAlert = readMessage(messageCount, messagePayload);
-    iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
-    iothubLoop();
+    //char messagePayload[MESSAGE_MAX_LEN];
+    //bool temperatureAlert = readMessage(messageCount, messagePayload);
+    //iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
+    //iothubLoop();
+    // smm: Setting up GPS data XMIT -> MXChip -> Serial Monitor
+    // smm: Read a byte from 2nd serial port
+    int byte = Serial1.read();
+    //smm: Send the byte to the USB serial port
+    Serial.write(byte);
+
     delay(10);
 }
