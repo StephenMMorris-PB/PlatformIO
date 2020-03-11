@@ -7,6 +7,14 @@
 //smm-added GPS header
 #include "Adafruit_GPS.h"
 
+// smm: 3/10/2020, 2:10PM status:
+//                        1. Solved: Adafruit GPS errors solved (with Adafruit_GPS.h added above)
+//                        2. Next step: Add 2nd UART
+
+// smm: adding 2nd UART. . .
+
+UARTClass Serial1(UART_1);
+
 static bool hasWifi = false;
 int messageCount = 1;
 
