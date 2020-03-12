@@ -4,19 +4,21 @@
 #include "utility.h"
 #include "iothub_client_sample_mqtt.h"
 #include "Telemetry.h"
-//smm-added GPS header
-#include "Adafruit_GPS.h"
 
-// smm: 3/10/2020, 2:10PM status:
-//                        1. Solved: Adafruit GPS errors solved (with Adafruit_GPS.h added above)
-//                        2. Next step: Add 2nd UART
+// ***** START - GPS Code - per toptechboy.com *****
+#include "Adafruit_GPS.h"   //smm
 
-// smm: adding 2nd UART. . .
+UARTClass GpsSerial(UART_1);  // create 2nd UART for GPS->MXChip Lat/Long XFER
+Adafruit_GPS GPS(&GpsSerial); // create GPS object, using 2nd UART (UART_1, w/ name GpsSerial)
 
-UARTClass Serial1(UART_1);
+String NMEA1;  // Variable to hold our first NMEA sentence
+String NMEA2;  // Variable to hold our second NMEA sentence
+char c;        // Read the characters from the GPS module
+// ***** END - GPS Code - per toptechboy.com *****
 
 static bool hasWifi = false;
 int messageCount = 1;
+
 
 void initWifi()
 {
@@ -27,8 +29,8 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/11/20 3:20 pm \r\n");
-        Screen.print(3, "Goal: show L/L\r\n");
+        Screen.print(2, "3/11/20 8:09pm \r\n");
+        Screen.print(3, "Clean L/L\r\n");
     }
     else
     {
@@ -36,11 +38,55 @@ void initWifi()
     }
 }
 
+
+void GPSsetup()  
+{
+  GPS.sendCommand("$PGCMD,33,0*6D");                // Turn Off GPS Antenna Update
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);     // Tell GPS we want only $GPRMC and $GPGGA NMEA sentences
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);        // 1 Hz update rate
+  delay(1000);                                      //Pause
+}
+
+void clearGPS() 
+{  //Since between GPS reads, we still have data streaming in, we need to clear the old data by reading a few sentences, and discarding these
+    while(!GPS.newNMEAreceived()) 
+    {
+        c=GPS.read();
+    }
+    GPS.parse(GPS.lastNMEA());
+    while(!GPS.newNMEAreceived()) {
+    c=GPS.read();
+    }
+    GPS.parse(GPS.lastNMEA());
+}
+
+void readGPS()          //This function will read and remember two NMEA sentences from GPS
+{  
+    clearGPS();         //Serial port probably has old or corrupt data, so begin by clearing it all out
+    while(!GPS.newNMEAreceived()) 
+    {   //Keep reading characters in this loop until a good NMEA sentence is received
+        c=GPS.read(); //read a character from the GPS
+    }
+    GPS.parse(GPS.lastNMEA());  //Once get a good NMEA, parse it
+    NMEA1=GPS.lastNMEA();       //Once parsed, save NMEA sentence into NMEA1
+    while(!GPS.newNMEAreceived()) 
+    {   //Get 2nd NMEA sentence, should be different type than the first one read above.
+        c=GPS.read();
+    }
+    GPS.parse(GPS.lastNMEA());
+    NMEA2=GPS.lastNMEA();
+    Serial.println(NMEA1);
+    Serial.println(NMEA2);
+    Serial.println("");
+}
+
+
+
 void setup()
 {
     //smm-setting up 2nd UART for GPS data
-    Serial1.begin(9600);
-
+    GpsSerial.begin(9600);  //GPS UART baud rate
+    GPSsetup(); //
     hasWifi = false;
     initWifi();
     if (!hasWifi)
@@ -63,12 +109,14 @@ void loop()
     //char messagePayload[MESSAGE_MAX_LEN];
     //bool temperatureAlert = readMessage(messageCount, messagePayload);
     //iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
-    //iothubLoop();
+
+    readGPS();  // Let's see clean NMEA's!
+
     // smm: Setting up GPS data XMIT -> MXChip -> Serial Monitor
     // smm: Read a byte from 2nd serial port
-    int byte = Serial1.read();
+    // int byte = GpsSerial.read();
     //smm: Send the byte to the USB serial port
-    Serial.write(byte);
+    // Serial.write(byte);
 
     delay(10);
 }
