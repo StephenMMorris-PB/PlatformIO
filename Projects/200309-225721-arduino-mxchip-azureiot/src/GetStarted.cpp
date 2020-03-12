@@ -29,7 +29,7 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/11/20 8:09pm \r\n");
+        Screen.print(2, "3/11/20 8:55pm \r\n");
         Screen.print(3, "Clean L/L\r\n");
     }
     else
