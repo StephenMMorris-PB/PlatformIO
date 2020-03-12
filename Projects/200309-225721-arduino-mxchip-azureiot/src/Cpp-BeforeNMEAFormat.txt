@@ -19,9 +19,9 @@ char c;        // Read the characters from the GPS module
 // ***** END - GPS Code - per toptechboy.com *****
 
 // to format NMEA Latitude, Longitude
-double deg;          // Will hold position data in simple degree format
-double degWhole;     // Variable for the whole part of position 
-double degDec;       // Variable for the decimal part of degree
+float deg;          // Will hold position data in simple degree format
+float degWhole;     // Variable for the whole part of position 
+float degDec;       // Variable for the decimal part of degree
 
 static bool hasWifi = false;
 int messageCount = 1;
@@ -36,8 +36,8 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/12/20 12:53pm \r\n");
-        Screen.print(3, "NMEA,Lat,Lon\r\n");
+        Screen.print(2, "3/12/20 12:16pm \r\n");
+        Screen.print(3, "Clean L/L\r\n");
     }
     else
     {
@@ -89,33 +89,7 @@ void readGPS()          //This function will read and remember two NMEA sentence
     Serial.println(NMEA1);
     Serial.println(NMEA2);
     Serial.println("");
-
-
-    // ************************************************************************************
-    //smm-NMEA format to Latitude, Longitude
-
-    degWhole = double(int(GPS.longitude/100)); //gives me the whole degree part of Longitude
-    degDec = (GPS.longitude - degWhole*100)/60; //give me fractional part of longitude
-    deg = degWhole + degDec; //Gives complete correct decimal form of Longitude degrees
-    if (GPS.lon =='W') 
-    {  //If you are in Western Hemisphere, longitude degrees should be negative
-        deg= (-1)*deg;
-    }
-
-    Serial.println(deg);
-
-    degWhole = double(int(GPS.latitude/100)); //gives me the whole degree part of latitude
-    degDec = (GPS.latitude - degWhole*100)/60; //give me fractional part of latitude
-    deg = degWhole + degDec; //Gives complete correct decimal form of latitude degrees
-    if (GPS.lat =='S') 
-    {  //If you are in Southern hemisphere latitude should be negative
-        deg= (-1)*deg;
-    }
-
-    Serial.println(deg);
-    Serial.println("");
     
-    // ************************************************************************************
 }
 
 
