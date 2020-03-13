@@ -36,7 +36,7 @@ void initWifi()
         IPAddress ip = WiFi.localIP();
         Screen.print(1, ip.get_address());
         hasWifi = true;
-        Screen.print(2, "3/12/20 12:53pm \r\n");
+        Screen.print(2, "3/13/20 9:35am \r\n");
         Screen.print(3, "NMEA,Lat,Lon\r\n");
     }
     else
