@@ -29,15 +29,17 @@ int messageCount = 1;
 
 void initWifi()
 {
-     Screen.print("Geo Device1\r\n \r\nConnecting...\r\n");
+     Screen.print("Geo-Device1\r\n \r\nConnecting...\r\n");
 
     if (WiFi.begin() == WL_CONNECTED)
     {
         IPAddress ip = WiFi.localIP();
-        Screen.print(1, ip.get_address());
+        //Screen.print(1, ip.get_address());
+        Screen.print(1, "3/15/20 7:57am \r\n");
         hasWifi = true;
-        Screen.print(2, "3/13/20 9:35am \r\n");
-        Screen.print(3, "NMEA,Lat,Lon\r\n");
+        Screen.print(2, "Lat,Lon->Ser Mon\r\n");
+        //Screen.print(3, "NMEA,Lat,Lon\r\n");
+        Screen.print(3, "Tem,Hud->IoT Hub\r\n");
     }
     else
     {
@@ -86,8 +88,9 @@ void readGPS()          //This function will read and remember two NMEA sentence
     
     NMEA2=GPS.lastNMEA();
   
-    Serial.println(NMEA1);
-    Serial.println(NMEA2);
+    //smm: 3/15/2020: uncommented 2 NMEA prints below to see full NMEA sentences in serial monitor.
+    //Serial.println(NMEA1);
+    //Serial.println(NMEA2);
     Serial.println("");
 
 
@@ -125,6 +128,7 @@ void setup()
     //smm-setting up 2nd UART for GPS data
     GpsSerial.begin(9600);  //GPS UART baud rate
     GPSsetup(); //
+
     hasWifi = false;
     initWifi();
     if (!hasWifi)
@@ -144,10 +148,12 @@ void setup()
 
 void loop()
 {
-    //char messagePayload[MESSAGE_MAX_LEN];
-    //bool temperatureAlert = readMessage(messageCount, messagePayload);
-    //iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
-
+    //smm-3/13/2020-re-activating IoT hub msg XFER functions
+    char messagePayload[MESSAGE_MAX_LEN];
+    bool temperatureAlert = readMessage(messageCount, messagePayload);
+    iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
+    iothubLoop();  //smm-03/15/2020, 7:15am - added back after accidental deletion.
+                   // this deletion may be reason data not sent to IoT Hub.
     readGPS();  // Let's see clean NMEA's in MXChip display!
 
     delay(10);
