@@ -6,6 +6,7 @@
 
 #define MESSAGE_MAX_LEN 256
 
-#define DEVICE_ID "AZ3166"
+//smm-3/19/2020: updated definition of DEVICE_ID from default: "AZ3166"
+#define DEVICE_ID "geo-Device1"
 
 #define TEMPERATURE_ALERT 30

@@ -19,9 +19,10 @@ char c;        // Read the characters from the GPS module
 // ***** END - GPS Code - per toptechboy.com *****
 
 // to format NMEA Latitude, Longitude
-double deg;          // Will hold position data in simple degree format
-double degWhole;     // Variable for the whole part of position 
-double degDec;       // Variable for the decimal part of degree
+//smm-3/16/20 - changing double -> float, 5 places for deg, degWhole, degDec...
+float deg;          // Will hold position data in simple degree format
+float degWhole;     // Variable for the whole part of position 
+float degDec;       // Variable for the decimal part of degree
 
 static bool hasWifi = false;
 int messageCount = 1;
@@ -29,17 +30,18 @@ int messageCount = 1;
 
 void initWifi()
 {
-     Screen.print("Geo-Device1\r\n \r\nConnecting...\r\n");
+     Screen.print("geo-Device1\r\n \r\nConnecting...\r\n");
 
     if (WiFi.begin() == WL_CONNECTED)
     {
         IPAddress ip = WiFi.localIP();
         //Screen.print(1, ip.get_address());
-        Screen.print(1, "3/15/20 7:57am \r\n");
+        Screen.print(1, "3/19/20 3:07pm \r\n");
         hasWifi = true;
-        Screen.print(2, "Lat,Lon->Ser Mon\r\n");
+        //Screen.print(2, "Lat,Lon->Ser Mon\r\n");
         //Screen.print(3, "NMEA,Lat,Lon\r\n");
-        Screen.print(3, "Tem,Hud->IoT Hub\r\n");
+        //Screen.print(3, "Tem,Hud->IoT Hub\r\n");
+        Screen.print(3, "Tm,Hu->AzSqlSvr\r\n");
     }
     else
     {
@@ -97,7 +99,7 @@ void readGPS()          //This function will read and remember two NMEA sentence
     // ************************************************************************************
     //smm-NMEA format to Latitude, Longitude
 
-    degWhole = double(int(GPS.longitude/100)); //gives me the whole degree part of Longitude
+    degWhole = float(int(GPS.longitude/100)); //gives me the whole degree part of Longitude
     degDec = (GPS.longitude - degWhole*100)/60; //give me fractional part of longitude
     deg = degWhole + degDec; //Gives complete correct decimal form of Longitude degrees
     if (GPS.lon =='W') 
@@ -107,14 +109,14 @@ void readGPS()          //This function will read and remember two NMEA sentence
 
     Serial.println(deg);
 
-    degWhole = double(int(GPS.latitude/100)); //gives me the whole degree part of latitude
+    degWhole = float(int(GPS.latitude/100)); //gives me the whole degree part of latitude
     degDec = (GPS.latitude - degWhole*100)/60; //give me fractional part of latitude
     deg = degWhole + degDec; //Gives complete correct decimal form of latitude degrees
     if (GPS.lat =='S') 
     {  //If you are in Southern hemisphere latitude should be negative
         deg= (-1)*deg;
     }
-
+    
     Serial.println(deg);
     Serial.println("");
     
@@ -154,7 +156,7 @@ void loop()
     iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
     iothubLoop();  //smm-03/15/2020, 7:15am - added back after accidental deletion.
                    // this deletion may be reason data not sent to IoT Hub.
-    readGPS();  // Let's see clean NMEA's in MXChip display!
+    // readGPS();  // Let's see clean NMEA's in MXChip display!
 
     delay(10);
 }
