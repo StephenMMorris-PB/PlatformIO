@@ -43,10 +43,9 @@ void displayNMEAsentencesOnMonitor()
     
     NMEA2=GPS.lastNMEA();
   
-    Serial.println("NMEA1: GPGGA or GPRMC...");
+    //Serial.println("NMEA1: GPGGA or GPRMC...");
     Serial.println(NMEA1);
-    Serial.println("");
-    Serial.println("NMEA2: GPRMC or GPGGA...");
+    //Serial.println("NMEA2: GPRMC or GPGGA...");
     Serial.println(NMEA2);
     Serial.println("");
 
@@ -133,10 +132,15 @@ void GPSsetup()
 }
 
 void clearGPS() 
-{  //Since between GPS reads, we still have data streaming in, we need to clear the old data by reading a few sentences, and discarding these
+{   //Since between GPS reads, we still have data streaming in, we need to clear the old data by reading a few sentences, and discarding these
+    //smm-3/21/2020: added third read sequence to ensure that will get clean data
     while(!GPS.newNMEAreceived()) 
     {
         c=GPS.read();
+    }
+    GPS.parse(GPS.lastNMEA());
+    while(!GPS.newNMEAreceived()) {
+    c=GPS.read();
     }
     GPS.parse(GPS.lastNMEA());
     while(!GPS.newNMEAreceived()) {
