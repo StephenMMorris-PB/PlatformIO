@@ -11,5 +11,6 @@ void blinkLED(void);
 void blinkSendConfirmation(void);
 int getInterval(void);
 void GPSsetup(void);
+void displayNMEAsentencesOnMonitor(void);
 
 #endif /* UTILITY_H */

@@ -19,6 +19,39 @@ DevI2C *i2c;
 HTS221Sensor *sensor;
 static RGB_LED rgbLed;
 static int interval = INTERVAL;
+//smm: Optional serial monitor display of NMEA1: "GPGGA" & NMEA2:"GPRMC"
+void displayNMEAsentencesOnMonitor()
+{
+    // NMEA sentences are captured in a stream, so NMEA1 and NMEA2 represent, depending on stream-timing, either GPGGA or GPRMC
+    String NMEA1;  // Variable to hold our first NMEA sentence
+    String NMEA2;  // Variable to hold our second NMEA sentence
+
+    //clearGPS();         //Serial port probably has old or corrupt data, so begin by clearing it all out
+    while(!GPS.newNMEAreceived()) 
+    {   //Keep reading characters in this loop until a good NMEA sentence is received
+        c=GPS.read(); //read a character from the GPS
+    }
+    GPS.parse(GPS.lastNMEA());  //Once get a good NMEA, parse it
+    
+    NMEA1=GPS.lastNMEA();       //Once parsed, save NMEA sentence into NMEA1
+    
+    while(!GPS.newNMEAreceived()) 
+    {   //Get 2nd NMEA sentence, should be different type than the first one read above.
+        c=GPS.read();
+    }
+    GPS.parse(GPS.lastNMEA());
+    
+    NMEA2=GPS.lastNMEA();
+  
+    Serial.println("NMEA1: GPGGA or GPRMC...");
+    Serial.println(NMEA1);
+    Serial.println("");
+    Serial.println("NMEA2: GPRMC or GPGGA...");
+    Serial.println(NMEA2);
+    Serial.println("");
+
+
+}
 
 int getInterval()
 {
@@ -93,10 +126,10 @@ float readHumidity()
 void GPSsetup()  
 {
     GpsSerial.begin(9600);  //GPS UART baud rate
-    GPS.sendCommand("$PGCMD,33,0*6D");                // Turn Off GPS Antenna Update
+    GPS.sendCommand("$PGCMD,33,0*6D");                // Turn Off Adafruit GPS Antenna Update
     GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);     // Tell GPS we want only $GPRMC and $GPGGA NMEA sentences
     GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);        // 1 Hz update rate
-    delay(1000);                                      //Pause
+    delay(2000);                                      //Pause
 }
 
 void clearGPS() 
@@ -125,7 +158,7 @@ float readLatitude()
     latDegDec = (GPS.latitude - latDegWhole*100)/60; //give me fractional part of latitude
     latitude = latDegWhole + latDegDec; //Gives complete correct decimal form of latitude degrees
     if (GPS.lat =='S') 
-    {  //If you are in Southern hemisphere latitude should be negative
+    {  //If in Southern hemisphere latitude should be negative
         latitude= (-1)*latitude;
     }
     //Serial.println(latitude);
@@ -146,7 +179,7 @@ float readLongitude()
     lonDegDec = (GPS.longitude - lonDegWhole*100)/60; //give me fractional part of longitude
     longitude = lonDegWhole + lonDegDec; //Gives complete correct decimal form of Longitude degrees
     if (GPS.lon =='W') 
-    {  //If you are in Western Hemisphere, longitude degrees should be negative
+    {  //If in Western Hemisphere, longitude degrees should be negative
         longitude= (-1)*longitude;
     }
 
@@ -167,9 +200,6 @@ bool readMessage(int messageId, char *payload)
     JsonObject& root = jsonBuffer.createObject();
     root["deviceId"] = DEVICE_ID;
     root["messageId"] = messageId;
-
-    //root["latitude"] = latitude;
-    //root["longitude"] = longitude;
 
     bool temperatureAlert = false;
 
@@ -213,10 +243,6 @@ bool readMessage(int messageId, char *payload)
     {
         root["longitude"] = longitude;
     }
-
-
-
-
 
     root.printTo(payload, MESSAGE_MAX_LEN);
     return temperatureAlert;

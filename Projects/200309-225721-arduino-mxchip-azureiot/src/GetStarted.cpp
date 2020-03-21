@@ -19,7 +19,7 @@ void initWifi()
         hasWifi = true;
 
         //Screen.print(1, ip.get_address());
-        Screen.print(1, "3/20/20 5:08pm \r\n");
+        Screen.print(1, "3/20/20 7:42pm \r\n"); //time
         Screen.print(2, "T,H,L,L->SqlSvr\r\n");
         Screen.print(3, "Tbl:temhumlatlon\r\n");
     }
@@ -60,5 +60,6 @@ void loop()
     iothubSendMessage((const unsigned char *)messagePayload, temperatureAlert);
     iothubLoop();  //smm-03/15/2020, 7:15am - added back after accidental deletion.
                    // this deletion may be reason data not sent to IoT Hub.
+    //displayNMEAsentencesOnMonitor(); //smm: uncomment this for display of complete NMEA sentences, $GPRMC, $GPGGA (Lat/Lon contained in these)
     delay(10);
 }
