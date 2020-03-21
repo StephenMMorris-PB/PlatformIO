@@ -10,5 +10,6 @@ void sensorInit(void);
 void blinkLED(void);
 void blinkSendConfirmation(void);
 int getInterval(void);
+void GPSsetup(void);
 
 #endif /* UTILITY_H */
